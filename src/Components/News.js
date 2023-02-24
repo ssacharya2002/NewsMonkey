@@ -1,59 +1,108 @@
 import React, { Component } from "react";
+// import Nav from "./Nav";
 import NewsItem from "./NewsItem";
 
-export class News extends Component {
-  acticles = [];
+class News extends Component {
+  article = [];
 
   constructor() {
     super();
 
+    console.log("cunstructor");
+
     this.state = {
-      articles: this.acticles,
-      loading: false,
+      article: [],
+      page: 0,
+      totalResults: 0,
     };
   }
 
   async componentDidMount() {
-    let url =
-      "https://newsapi.org/v2/top-headlines?country=in&apiKey=9c9b7b7a73ea43cfa15ab1f5f9da97c1";
-
-    //  let data = await fetch(url);
-    //  let persedData = await data.json();
-    //  console.log(persedData.articles);
-    //  this.setState({acticles : persedData.articles})
-    // //  this.artcles = persedData.acticles;
-
-    fetch(url)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        this.setState({
-          acticles: json.articles,
-        });
-      });
+    let data = await fetch(
+      "https://newsapi.org/v2/top-headlines?country=in&apiKey=9c9b7b7a73ea43cfa15ab1f5f9da97c1&pageSize=20"
+    );
+    let parsedData = await data.json();
+    console.log(parsedData.articles);
+    this.setState({
+      article: parsedData.articles,
+      totalResults: Math.ceil(parsedData.totalResults / 20),
+    });
   }
 
-  render() {
-    return (
-      <div className="container my-4">
-        <h2>News Monkey - Top headlines</h2>
+  HandlePrevClick = async () => {
+    console.log("handle previous");
 
-        <div className="row">
-          {this.state.articles.map((element) => {
-            return (
-              <div key={element.url} className="col-md-4 ">
-                <NewsItem
-                  title={element.title}
-                  description={element.description}
-                  imgUrl={element.urlToImage}
-                  NewsUrl={element.url}
-                />
-              </div>
-            );
-          })}
+    let data = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=in&apiKey=9c9b7b7a73ea43cfa15ab1f5f9da97c1&page=${
+        this.state.page - 1
+      }&pageSize=20`
+    );
+    let parsedData = await data.json();
+    console.log(parsedData.articles);
+    this.setState({ article: parsedData.articles });
+
+    this.setState({ page: this.state.page - 1 });
+  };
+
+  HandlenextClick = async () => {
+    if (this.state.page + 1 > this.state.totalResults) {
+    } else {
+      console.log("handle next");
+      let data = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=in&apiKey=9c9b7b7a73ea43cfa15ab1f5f9da97c1&page=${
+          this.state.page + 1
+        }&pageSize=20`
+      );
+      let parsedData = await data.json();
+      console.log(parsedData.articles);
+      this.setState({ article: parsedData.articles });
+
+      this.setState({ page: this.state.page + 1 });
+    }
+  };
+
+  render() {
+    console.log("render");
+    console.log(this.state.article);
+    return (
+      <>
+        <div className="container mx-4 my-4">
+          <div className="row">
+            {this.state.article.map((element) => {
+              return (
+                <div key={element.url} className="col-md-4 ">
+                  <NewsItem
+                    title={element.title}
+                    description={element.description}
+                    imgUrl={element.urlToImage}
+                    NewsUrl={element.url}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+
+        <div className="container  d-flex justify-content-between  my-4">
+          <button
+            disabled={this.state.page <= 1}
+            type="button"
+            class="btn btn-dark"
+            onClick={this.HandlePrevClick}
+          >
+            {" "}
+            &larr; Previous
+          </button>
+          <button
+            disabled={this.state.page + 1 > this.state.totalResults}
+            type="button"
+            class="btn btn-dark"
+            onClick={this.HandlenextClick}
+          >
+            Next &rarr;
+          </button>
+        </div>
+      </>
     );
   }
 }
