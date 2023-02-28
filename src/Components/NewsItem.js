@@ -9,7 +9,7 @@ export class NewsItem extends Component {
           src={
             imgUrl
               ? imgUrl
-              : "https://c8.alamy.com/comp/2H5RADC/globe-world-news-flat-icon-vector-illustration-news-symbol-logo-illustration-2H5RADC.jpg"
+              : "https://static.vecteezy.com/system/resources/previews/000/169/249/original/holding-remote-control-and-watching-tv-news-vector.jpg"
           }
           className="card-img-top"
           alt="..."
