@@ -2,9 +2,15 @@ import React, { Component } from "react";
 
 export class NewsItem extends Component {
   render() {
-    let { title, description, imgUrl, NewsUrl } = this.props;
+    let { title, description, imgUrl, NewsUrl, author, date, source } =
+      this.props;
     return (
-      <div className="card my-3" style={{ width: "18rem" }}>
+      <div className=" my-3" style={{ width: "18rem" }}>
+      <div className=" card" >
+
+        <span className="position-absolute top-0  translate-middle badge rounded-pill bg-danger" style={ {left:"90%",zIndex:1}}>
+          {source}
+        </span>
         <img
           src={
             imgUrl
@@ -17,6 +23,10 @@ export class NewsItem extends Component {
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{description}</p>
+
+          <p className="card-footer text-muted">
+            By {author ? author : "Unknown"} on {new Date(date).toDateString()}
+          </p>
           <a
             rel="noreferrer"
             href={NewsUrl}
@@ -26,6 +36,7 @@ export class NewsItem extends Component {
             Read more
           </a>
         </div>
+      </div>
       </div>
     );
   }
