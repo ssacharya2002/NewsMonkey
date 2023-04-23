@@ -1,17 +1,11 @@
-import React, { Component } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
-export default class Navbar extends Component {
-
-
-
-
-
-  render() {
-    return (
-      <div>
-
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+const Navbar = () => {
+  return (
+    <div>
+      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
           <Link className="navbar-brand" to="/">
             News Monkey
           </Link>
@@ -21,7 +15,7 @@ export default class Navbar extends Component {
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent"
-            aria-expanded="false"
+            aria-expanded="true"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
@@ -31,7 +25,7 @@ export default class Navbar extends Component {
             className="collapse navbar-collapse "
             id="navbarSupportedContent"
           >
-            <ul className="navbar-nav mr-auto">
+            <ul className="navbar-nav me-auto mb-2 mb-l-2">
               <li className="nav-link">
                 <Link className="nav-link" to="/">
                   {" "}
@@ -75,10 +69,12 @@ export default class Navbar extends Component {
               </li>
             </ul>
           </div>
-        </nav>
+        </div>
+      </nav>
 
-        {/* <Outlet /> */}
-      </div>
-    );
-  }
-}
+      {/* <Outlet /> */}
+    </div>
+  );
+};
+
+export default Navbar;
